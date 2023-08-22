@@ -1,12 +1,5 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Param,
-  ParseIntPipe,
-  Post,
-} from '@nestjs/common';
-import { UserSignUp } from './dto/create-user.dto';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { UserSignUpDto } from './dto/create-user.dto';
 import { UserAuthService } from './userAuth.service';
 
 @Controller('user/auth')
@@ -14,8 +7,8 @@ export class UserAuthController {
   constructor(private userAuthService: UserAuthService) {}
 
   @Post('signup')
-  signup(@Body() { id, sUserName, sEmail, nAge }: UserSignUp) {
-    return this.userAuthService.signup(id, sUserName, sEmail, nAge);
+  signup(@Body() UserSignUp: UserSignUpDto) {
+    return this.userAuthService.signup(UserSignUp);
   }
 
   @Get('list')
@@ -24,7 +17,7 @@ export class UserAuthController {
   }
 
   @Get(':id')
-  getUser(@Param('id', ParseIntPipe) id: number) {
+  getUser(@Param('id') id: string) {
     return this.userAuthService.getUser(id);
   }
 }
